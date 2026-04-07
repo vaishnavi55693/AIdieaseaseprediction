@@ -1,0 +1,112 @@
+{
+  "Heart Disease": {
+    "logistic_regression": {
+      "accuracy": 0.8688,
+      "f1_score": 0.825,
+      "roc_auc": 0.9385
+    },
+    "random_forest": {
+      "accuracy": 0.8812,
+      "f1_score": 0.8362,
+      "roc_auc": 0.9271
+    },
+    "decision_tree": {
+      "accuracy": 0.7875,
+      "f1_score": 0.7236,
+      "roc_auc": 0.8424
+    },
+    "svm": {
+      "accuracy": 0.875,
+      "f1_score": 0.8319,
+      "roc_auc": 0.9184
+    }
+  },
+  "Diabetes": {
+    "logistic_regression": {
+      "accuracy": 0.9563,
+      "f1_score": 0.9421,
+      "roc_auc": 0.9947
+    },
+    "random_forest": {
+      "accuracy": 0.9563,
+      "f1_score": 0.9417,
+      "roc_auc": 0.9901
+    },
+    "decision_tree": {
+      "accuracy": 0.9406,
+      "f1_score": 0.9212,
+      "roc_auc": 0.9442
+    },
+    "svm": {
+      "accuracy": 0.9313,
+      "f1_score": 0.9083,
+      "roc_auc": 0.9873
+    }
+  },
+  "Kidney Disease": {
+    "logistic_regression": {
+      "accuracy": 0.9,
+      "f1_score": 0.8689,
+      "roc_auc": 0.9555
+    },
+    "random_forest": {
+      "accuracy": 0.8625,
+      "f1_score": 0.807,
+      "roc_auc": 0.936
+    },
+    "decision_tree": {
+      "accuracy": 0.8156,
+      "f1_score": 0.7572,
+      "roc_auc": 0.8662
+    },
+    "svm": {
+      "accuracy": 0.875,
+      "f1_score": 0.8347,
+      "roc_auc": 0.9492
+    }
+  },
+  "Lung Disease": {
+    "logistic_regression": {
+      "accuracy": 0.8,
+      "f1_score": 0.7143,
+      "roc_auc": 0.8866
+    },
+    "random_forest": {
+      "accuracy": 0.7625,
+      "f1_score": 0.6346,
+      "roc_auc": 0.8453
+    },
+    "decision_tree": {
+      "accuracy": 0.7312,
+      "f1_score": 0.6356,
+      "roc_auc": 0.7667
+    },
+    "svm": {
+      "accuracy": 0.7688,
+      "f1_score": 0.6636,
+      "roc_auc": 0.8621
+    }
+  },
+  "Liver Disease": {
+    "logistic_regression": {
+      "accuracy": 0.9125,
+      "f1_score": 0.8833,
+      "roc_auc": 0.9776
+    },
+    "random_forest": {
+      "accuracy": 0.8812,
+      "f1_score": 0.839,
+      "roc_auc": 0.965
+    },
+    "decision_tree": {
+      "accuracy": 0.8781,
+      "f1_score": 0.8282,
+      "roc_auc": 0.9028
+    },
+    "svm": {
+      "accuracy": 0.8906,
+      "f1_score": 0.8548,
+      "roc_auc": 0.972
+    }
+  }
+}

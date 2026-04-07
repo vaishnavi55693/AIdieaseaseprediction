@@ -1,0 +1,11 @@
+{
+  "name": "ai-health-predictor-backend",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": ".\\.venv\\Scripts\\python.exe -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload",
+    "start": ".\\.venv\\Scripts\\python.exe -m uvicorn main:app --host 0.0.0.0 --port 8000",
+    "train:data": ".\\.venv\\Scripts\\python.exe ..\\dataset\\generate_synthetic_data.py",
+    "train:models": ".\\.venv\\Scripts\\python.exe ..\\models\\train_models.py"
+  }
+}
