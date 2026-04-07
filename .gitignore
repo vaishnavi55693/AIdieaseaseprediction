@@ -4,5 +4,7 @@ __pycache__/
 node_modules/
 dist/
 database/*.db
+database/*.db-shm
+database/*.db-wal
 models/*.joblib
 dataset/*.csv
