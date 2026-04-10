@@ -1,7 +1,7 @@
 from app.database import Base, engine
 from app.schema_utils import ensure_schema
 from app.seed import seed_defaults
-from app.routers import auth, dashboard, history, predictions
+from app.routers import auth, chat, dashboard, history, predictions
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -32,6 +32,8 @@ app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
 app.include_router(predictions.router, prefix="/api/predictions", tags=["Predictions"])
 app.include_router(dashboard.router, prefix="/api/dashboard", tags=["Dashboard"])
 app.include_router(history.router, prefix="/api", tags=["History"])
+app.include_router(chat.router, prefix="/api", tags=["Chatbot"])
+app.include_router(chat.router, tags=["Chatbot"])
 
 
 @app.get("/")

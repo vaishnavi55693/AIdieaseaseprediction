@@ -17,6 +17,24 @@ const initialState = {
   frequent_urination: false,
 };
 
+const fieldMeta = {
+  age: { label: "Age", type: "number" },
+  height_cm: { label: "Height (cm)", type: "number" },
+  weight_kg: { label: "Weight (kg)", type: "number" },
+  blood_pressure: { label: "Blood Pressure", type: "number" },
+  glucose_level: { label: "Glucose Level", type: "number" },
+  cholesterol: { label: "Cholesterol", type: "number" },
+};
+
+const toggleMeta = {
+  smoking: { label: "Smoking" },
+  alcohol: { label: "Alcohol" },
+  chest_pain: { label: "Chest Pain" },
+  fatigue: { label: "Fatigue" },
+  shortness_of_breath: { label: "Shortness of Breath" },
+  frequent_urination: { label: "Frequent Urination" },
+};
+
 export default function PredictionForm({ onSubmit, submitting, initialValues }) {
   const [form, setForm] = useState({ ...initialState, ...initialValues });
   useEffect(() => {
@@ -36,19 +54,12 @@ export default function PredictionForm({ onSubmit, submitting, initialValues }) 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {[
-          ["age", "Age", "number"],
-          ["height_cm", "Height (cm)", "number"],
-          ["weight_kg", "Weight (kg)", "number"],
-          ["blood_pressure", "Blood Pressure", "number"],
-          ["glucose_level", "Glucose Level", "number"],
-          ["cholesterol", "Cholesterol", "number"],
-        ].map(([key, label, type]) => (
+        {Object.entries(fieldMeta).map(([key, meta]) => (
           <label key={key} className="block">
-            <span className="mb-2 block text-sm font-medium text-slate-700">{label}</span>
+            <span className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">{meta.label}</span>
             <input
               className="input-shell"
-              type={type}
+              type={meta.type}
               value={form[key]}
               onChange={(event) => updateField(key, Number(event.target.value))}
               required
@@ -57,7 +68,7 @@ export default function PredictionForm({ onSubmit, submitting, initialValues }) 
         ))}
 
         <label className="block">
-          <span className="mb-2 block text-sm font-medium text-slate-700">Gender</span>
+          <span className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">Gender</span>
           <select className="input-shell" value={form.gender} onChange={(event) => updateField("gender", event.target.value)}>
             <option>Male</option>
             <option>Female</option>
@@ -65,7 +76,7 @@ export default function PredictionForm({ onSubmit, submitting, initialValues }) 
         </label>
 
         <label className="block">
-          <span className="mb-2 block text-sm font-medium text-slate-700">Physical Activity</span>
+          <span className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">Physical Activity</span>
           <select
             className="input-shell"
             value={form.physical_activity}
@@ -90,7 +101,7 @@ export default function PredictionForm({ onSubmit, submitting, initialValues }) 
                 : "border-slate-200 bg-slate-50 text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
             }`}
           >
-            <p className="text-sm font-medium capitalize">{key.replaceAll("_", " ")}</p>
+            <p className="text-sm font-medium">{toggleMeta[key].label}</p>
             <p className="mt-1 text-xs">{form[key] ? "Yes" : "No"}</p>
           </button>
         ))}

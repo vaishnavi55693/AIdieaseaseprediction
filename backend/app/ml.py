@@ -136,6 +136,103 @@ def predict_all(payload: dict) -> dict:
     }
 
 
+def weighted_risk_scores(payload: dict) -> dict:
+    """
+    Lightweight, transparent risk scoring (0-100) based on the same input
+    fields used by the frontend form. This is used by the API endpoint that
+    returns a simplified risk object for each disease.
+    """
+    height_cm = float(payload.get("height_cm") or 0)
+    weight_kg = float(payload.get("weight_kg") or 0)
+    age = int(payload.get("age") or 0)
+    bp = float(payload.get("blood_pressure") or 0)
+    glucose = float(payload.get("glucose_level") or 0)
+    cholesterol = float(payload.get("cholesterol") or 0)
+
+    smoking = bool(payload.get("smoking"))
+    alcohol = bool(payload.get("alcohol"))
+    chest_pain = bool(payload.get("chest_pain"))
+    fatigue = bool(payload.get("fatigue"))
+    shortness_of_breath = bool(payload.get("shortness_of_breath"))
+    frequent_urination = bool(payload.get("frequent_urination"))
+
+    bmi = 0.0
+    if height_cm > 0:
+        bmi = weight_kg / ((height_cm / 100) ** 2)
+
+    high_bp = bp >= 140
+    high_chol = cholesterol >= 200
+    high_bmi = bmi > 25
+    diabetes_flag = glucose > 120
+
+    heart = 0
+    if age > 45:
+        heart += 15
+    if high_bp:
+        heart += 20
+    if high_chol:
+        heart += 20
+    if smoking:
+        heart += 20
+    if chest_pain:
+        heart += 25
+
+    diabetes = 0
+    if glucose > 120:
+        diabetes += 30
+    if bmi > 25:
+        diabetes += 20
+    if age > 40:
+        diabetes += 15
+    if frequent_urination:
+        diabetes += 20
+    if fatigue:
+        diabetes += 15
+
+    kidney = 0
+    if high_bp:
+        kidney += 25
+    if diabetes_flag:
+        kidney += 25
+    if age > 50:
+        kidney += 20
+    if fatigue:
+        kidney += 15
+
+    lung = 0
+    if smoking:
+        lung += 30
+    if shortness_of_breath:
+        lung += 25
+    if fatigue:
+        lung += 15
+
+    liver = 0
+    if alcohol:
+        liver += 30
+    if high_bmi:
+        liver += 20
+    if fatigue:
+        liver += 15
+
+    def clamp(value: float) -> int:
+        return int(min(100, max(0, round(value))))
+
+    return {
+        "heart": clamp(heart),
+        "diabetes": clamp(diabetes),
+        "kidney": clamp(kidney),
+        "lung": clamp(lung),
+        "liver": clamp(liver),
+    }
+
+
+def weighted_health_score(risks: dict) -> int:
+    values = [float(risks.get(key, 0)) for key in ("heart", "diabetes", "kidney", "lung", "liver")]
+    average_risk = sum(values) / len(values) if values else 0.0
+    return int(round(max(0, min(100, 100 - average_risk))))
+
+
 def heuristic_probability(disease: str, payload: dict, bmi: float) -> float:
     score = 12.0
     score += max(payload["age"] - 30, 0) * 0.9
