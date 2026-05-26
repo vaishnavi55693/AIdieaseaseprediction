@@ -20,8 +20,8 @@ export default function LoginPage() {
     } catch (err) {
       const message =
         err.code === "ERR_NETWORK" || err.message === "Network Error"
-          ? "Unable to connect to server.";
-          : typeof err.response?.data?.detail === "string"
+          ? "Unable to connect to server."
+          :typeof err.response?.data?.detail === "string"
             ? err.response.data.detail
             : err.message || "Unable to login right now.";
       setError(message);
