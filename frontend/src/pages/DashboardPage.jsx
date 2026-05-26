@@ -1,12 +1,17 @@
+import { motion } from "framer-motion";
 import { ArrowRight, HeartPulse, ShieldPlus, Sparkles, Waves, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
   DiseaseRiskBarChart,
   HealthScoreProgressChart,
   PredictionHistoryChart,
+  RiskDistributionChart,
 } from "../components/DashboardCharts";
 import DiseaseCard from "../components/DiseaseCard";
+import EmptyState from "../components/EmptyState";
 import HealthScoreBadge from "../components/HealthScoreBadge";
+import { SkeletonCard } from "../components/LoadingSkeleton";
+import PageTransition from "../components/PageTransition";
 import StatCard from "../components/StatCard";
 import { useAuth } from "../context/AuthContext";
 import { useDashboard } from "../useDashboard";
@@ -21,10 +26,42 @@ const diseaseCards = [
 
 export default function DashboardPage() {
   const { user } = useAuth();
-  const { data } = useDashboard();
+  const { data, loading } = useDashboard();
+
+  if (loading) {
+    return (
+      <PageTransition>
+        <div className="space-y-6">
+          <div className="glass-panel h-64 animate-pulse p-8" />
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <SkeletonCard key={index} />
+            ))}
+          </div>
+          <div className="grid gap-4 xl:grid-cols-3">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <div key={index} className="glass-panel h-96 animate-pulse p-8" />
+            ))}
+          </div>
+        </div>
+      </PageTransition>
+    );
+  }
+
+  if (!data) {
+    return (
+      <PageTransition>
+        <EmptyState
+          title="Your premium health dashboard is ready"
+          description="Run your first intelligent prediction to unlock disease comparison, wellness scoring, clinical-style recommendations, and longitudinal health analytics."
+        />
+      </PageTransition>
+    );
+  }
 
   return (
-    <div className="space-y-6">
+    <PageTransition>
+      <div className="space-y-6">
       <section className="glass-panel relative overflow-hidden bg-gradient-to-r from-[#fffdf5] to-[#f4fbff] p-6 dark:from-slate-900 dark:to-slate-800 sm:p-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.18),transparent_20%),radial-gradient(circle_at_bottom_left,rgba(251,146,60,0.16),transparent_20%)]" />
         <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -36,8 +73,20 @@ export default function DashboardPage() {
             <p className="mt-4 max-w-2xl text-slate-600 dark:text-slate-300">
               Explore intelligent risk prediction, previous assessments, and guided next steps in one elegant workspace.
             </p>
-            <div className="mt-4">
+            <div className="mt-4 flex flex-wrap items-center gap-3">
               <HealthScoreBadge status={data?.quick_stats?.health_status || "Good Health"} />
+              <span className="rounded-full bg-white/70 px-3 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                {data?.quick_stats?.wellness_badge || "Balanced"}
+              </span>
+            </div>
+            <p className="mt-4 max-w-2xl text-sm text-slate-500 dark:text-slate-400">{data?.quick_stats?.trend_summary}</p>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 }}
+              className="mt-5 inline-flex rounded-3xl border border-slate-200 bg-white/80 px-4 py-3 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-200"
+            >
+              Most critical risk: <span className="ml-2 font-semibold">{data?.quick_stats?.critical_risk}</span>
             </div>
           </div>
           <Link to="/predict" className="action-button gap-2 self-start lg:self-auto">
@@ -62,7 +111,7 @@ export default function DashboardPage() {
         </div>
 
         <div className="space-y-4">
-          <div className="glass-panel p-5">
+          <div className="premium-card p-5">
             <h3 className="text-lg font-semibold">Daily Guidance</h3>
             <div className="mt-5 space-y-3">
               {[
@@ -79,7 +128,7 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div className="glass-panel p-5">
+          <div className="premium-card p-5">
             <div className="flex items-center gap-3">
               <div className="rounded-2xl bg-amber-100 p-3 text-amber-600">
                 <Zap className="h-5 w-5" />
@@ -96,11 +145,13 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      <section className="grid gap-4 xl:grid-cols-3">
+      <section className="grid gap-4 xl:grid-cols-2">
         <DiseaseRiskBarChart data={data?.charts?.risk_bar_chart ?? []} />
         <HealthScoreProgressChart data={data?.charts?.health_score_progress ?? []} />
         <PredictionHistoryChart data={data?.charts?.prediction_history_chart ?? []} />
+        <RiskDistributionChart data={data?.charts?.risk_distribution ?? []} />
       </section>
-    </div>
+      </div>
+    </PageTransition>
   );
 }

@@ -54,14 +54,14 @@ export default function Layout() {
                   to={to}
                   end={to === "/"}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 rounded-2xl px-4 py-3 text-sm transition ${
+                    `group flex items-center gap-3 rounded-2xl px-4 py-3 text-sm transition-all duration-300 ${
                       isActive
-                        ? "bg-slate-900 text-white shadow-lg"
-                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+                        ? "bg-gradient-to-r from-slate-900 to-slate-800 text-white shadow-[0_18px_32px_-20px_rgba(15,23,42,0.85)]"
+                        : "text-slate-600 hover:-translate-y-0.5 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
                     }`
                   }
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
                   {label}
                 </NavLink>
               ))}
@@ -71,7 +71,7 @@ export default function Layout() {
           <button
             type="button"
             onClick={logout}
-            className="flex items-center gap-3 rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+            className="flex items-center gap-3 rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-600 transition hover:-translate-y-0.5 hover:bg-slate-100 hover:text-slate-900 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
           >
             <LogOut className="h-4 w-4" />
             Logout

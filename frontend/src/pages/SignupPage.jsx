@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AuthShell from "../components/AuthShell";
 import { useAuth } from "../context/AuthContext";
+import { useToast } from "../context/ToastContext";
 
 function extractErrorMessage(err) {
   const detail = err.response?.data?.detail;
@@ -30,27 +31,34 @@ export default function SignupPage() {
   });
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const { pushToast } = useToast();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (form.full_name.trim().length < 2) {
       setError("Full name must be at least 2 characters.");
+      pushToast({ type: "error", title: "Invalid name", description: "Full name must be at least 2 characters." });
       return;
     }
     if (form.password.length < 8) {
       setError("Password must be at least 8 characters.");
+      pushToast({ type: "error", title: "Weak password", description: "Password must be at least 8 characters." });
       return;
     }
     if (form.password !== form.confirm_password) {
       setError("Passwords do not match.");
+      pushToast({ type: "error", title: "Password mismatch", description: "Password and confirm password must match." });
       return;
     }
     setSubmitting(true);
     setError("");
     try {
       await signup(form);
+      pushToast({ type: "success", title: "Account created", description: "Your healthcare workspace is ready." });
     } catch (err) {
-      setError(extractErrorMessage(err));
+      const message = extractErrorMessage(err);
+      setError(message);
+      pushToast({ type: "error", title: "Signup failed", description: message });
     } finally {
       setSubmitting(false);
     }
