@@ -15,7 +15,7 @@ function extractErrorMessage(err) {
     }
   }
   if (err.code === "ERR_NETWORK" || err.message === "Network Error") {
-    return "Backend server is not running. Start the backend on 127.0.0.1:8000 and try again.";
+    return "Unable to connect to server.";
   }
   return err.message || "Unable to create your account.";
 }

@@ -20,7 +20,7 @@ export default function LoginPage() {
     } catch (err) {
       const message =
         err.code === "ERR_NETWORK" || err.message === "Network Error"
-          ? "Backend server is not running. Start the backend on 127.0.0.1:8000 and try again."
+          ? "Unable to connect to server.";
           : typeof err.response?.data?.detail === "string"
             ? err.response.data.detail
             : err.message || "Unable to login right now.";
