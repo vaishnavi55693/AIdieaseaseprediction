@@ -8,3 +8,5 @@ database/*.db-shm
 database/*.db-wal
 models/*.joblib
 dataset/*.csv
+*.db-shm
+*.db-wal
