@@ -1,19 +1,7 @@
 import axios from "axios";
 
 const resolveApiBaseUrl = () => {
-  const fromEnv = import.meta.env.VITE_API_BASE_URL;
-  if (fromEnv && String(fromEnv).trim()) {
-    const base = String(fromEnv).trim().replace(/\/$/, "");
-    return base.endsWith("/api") ? base : `${base}/api`;
-  }
-
-  if (typeof window === "undefined") {
-    return "http://127.0.0.1:8000/api";
-  }
-
-  const hostname = window.location.hostname || "127.0.0.1";
-  const normalizedHost = hostname === "localhost" ? "127.0.0.1" : hostname;
-  return `http://${normalizedHost}:8000/api`;
+  return "https://aidieaseaseprediction3.onrender.com/api";
 };
 
 const api = axios.create({
